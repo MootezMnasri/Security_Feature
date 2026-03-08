@@ -1,0 +1,53 @@
+<!-- webform.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeVault - User Registration</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 400px; margin: 50px auto; padding: 20px; }
+        label { display: block; margin-top: 15px; font-weight: bold; }
+        input { width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; }
+        button { margin-top: 20px; padding: 10px 20px; background: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .error { color: red; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <h1>SafeVault Registration</h1>
+    <form action="/submit" method="post" id="registrationForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        function escapeHtml(str) {
+            if (!str) return "";
+            return str
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#x27;");
+        }
+
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            var username = document.getElementById('username').value;
+            var email = document.getElementById('email').value;
+            
+            // Whitelist-based sanitization
+            var safeUsername = escapeHtml(username.trim().replace(/[^\w.-]/g, ''));
+            var safeEmail = escapeHtml(email.trim());
+            
+            document.getElementById('username').value = safeUsername;
+            document.getElementById('email').value = safeEmail;
+        });
+    </script>
+</body>
+</html>
